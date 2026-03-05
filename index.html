@@ -385,7 +385,6 @@ function initData() {
   }
 
   document.getElementById('fDate').value = formatDate(now);
-  seedData();
   processRecurring();
   setType('expense');
   syncViewModeUI();
@@ -814,40 +813,6 @@ function importJSON(event) {
   };
   reader.readAsText(file);
   event.target.value = '';
-}
-
-// === Seed Data (one-time) ===
-function seedData() {
-  if (localStorage.getItem('budgetSeeded0305')) return;
-  const txs = [
-    { type:'expense', amount:176470, category:'생활', memo:'도시가스', date:'2026-02-25', tags:[] },
-    { type:'expense', amount:84580, category:'생활', memo:'관리비', date:'2026-02-25', tags:[] },
-    { type:'expense', amount:19520, category:'생활', memo:'전기', date:'2026-02-25', tags:[] },
-    { type:'expense', amount:50000, category:'기타', memo:'회비', date:'2026-02-25', tags:[] },
-    { type:'expense', amount:100000, category:'기타', memo:'경조사', date:'2026-02-25', tags:[] },
-    { type:'expense', amount:51000, category:'교통', memo:'버스카드', date:'2026-02-25', tags:[] },
-    { type:'expense', amount:34000, category:'기타', memo:'생일 (소현)', date:'2026-02-25', tags:[] },
-    { type:'expense', amount:5780, category:'식비', memo:'아침', date:'2026-02-26', tags:[] },
-    { type:'expense', amount:4000, category:'식비', memo:'아침', date:'2026-03-05', tags:[] },
-    { type:'expense', amount:27000, category:'생활', memo:'쿠팡 (마사지바, 떡갈비, 비요뜨)', date:'2026-02-26', tags:['쿠팡'] },
-    { type:'expense', amount:23360, category:'생활', memo:'마트 (야채세척스텐, 다진마늘, 아보카도, 베이킹소다)', date:'2026-02-27', tags:['마트'] },
-    { type:'expense', amount:4480, category:'생활', memo:'마트 (대파, 봄동)', date:'2026-02-28', tags:['마트'] },
-    { type:'expense', amount:7000, category:'의료', memo:'마데카솔, 밴드', date:'2026-02-28', tags:[] },
-    { type:'expense', amount:74630, category:'쇼핑', memo:'올리브영 (토너, 바디크림, 아이리무버, 앰플)', date:'2026-03-01', tags:['올리브영'] },
-    { type:'expense', amount:35000, category:'문화', memo:'속눈썹펌', date:'2026-03-01', tags:['미용'] },
-    { type:'expense', amount:18000, category:'문화', memo:'지원이', date:'2026-02-26', tags:['여가'] },
-    { type:'expense', amount:33000, category:'문화', memo:'횲언니', date:'2026-02-28', tags:['여가'] },
-    { type:'expense', amount:25780, category:'문화', memo:'뚱주', date:'2026-03-01', tags:['여가'] },
-    { type:'expense', amount:9900, category:'교통', memo:'택시', date:'2026-03-01', tags:[] },
-    { type:'expense', amount:10800, category:'교통', memo:'택시', date:'2026-03-02', tags:[] },
-  ];
-  txs.forEach(t => {
-    t.id = Date.now().toString(36) + Math.random().toString(36).slice(2,6);
-    t.recurring = null;
-    data.transactions.push(t);
-  });
-  save();
-  localStorage.setItem('budgetSeeded0305', '1');
 }
 
 // === Init ===
