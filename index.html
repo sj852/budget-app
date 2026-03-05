@@ -256,18 +256,6 @@ body { font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', '맑�
     <div id="txList"></div>
   </div>
 
-  <!-- Tools -->
-  <div class="tools">
-    <div class="export-dropdown">
-      <button class="btn-export" style="width:100%" onclick="toggleExportMenu()">📤 내보내기</button>
-      <div class="export-menu" id="exportMenu">
-        <button onclick="exportJSON()">💾 JSON 백업</button>
-        <button onclick="exportCSV()">📄 CSV 다운로드</button>
-      </div>
-    </div>
-    <button class="btn-import" onclick="document.getElementById('importFile').click()">📥 불러오기</button>
-    <input type="file" id="importFile" accept=".json" onchange="importJSON(event)">
-  </div>
 </div>
 
 <!-- Edit Modal -->
