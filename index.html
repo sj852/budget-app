@@ -156,7 +156,7 @@ body { font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', '맑�
 
   <!-- Header -->
   <div class="header">
-    <h1>💰 가계부</h1>
+    <h1>💰 횡이 가계부</h1>
     <div class="month-nav">
       <button onclick="changeMonth(-1)">◀</button>
       <span id="monthLabel"></span>
@@ -530,10 +530,14 @@ function addTransaction() {
   document.getElementById('fTags').value = '';
   document.getElementById('fRecurring').value = 'none';
 
-  // Navigate to transaction's month
+  // Navigate to transaction's cycle/month
   const d = new Date(date);
   viewYear = d.getFullYear();
   viewMonth = d.getMonth();
+  if (data.settings.viewMode === 'cycle' && d.getDate() < data.settings.cycleStartDay) {
+    viewMonth--;
+    if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+  }
   refresh();
 }
 
