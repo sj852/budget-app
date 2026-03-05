@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💰 가계부</title>
+<title>💰 횡이 가계부</title>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -305,35 +304,18 @@ const firebaseConfig = {
   appId: "1:823423350080:web:53ea5b7d7272a1befeb6a5"
 };
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
 const db = firebase.firestore();
 db.enablePersistence().catch(() => {});
-let currentUser = null;
 let saveTimeout = null;
 
-auth.onAuthStateChanged(user => {
-  if (user) {
-    currentUser = user;
-    loadFromFirestore();
-  } else {
-    auth.signInAnonymously().catch(err => {
-      console.error('Anonymous auth failed:', err);
-      initData();
-    });
-  }
-});
-
-function getDocRef() {
-  return db.collection('users').doc(currentUser.uid);
-}
+const DOC_REF = db.collection('app').doc('budget');
 
 function loadFromFirestore() {
   setSyncStatus('불러오는 중...');
-  getDocRef().get().then(doc => {
+  DOC_REF.get().then(doc => {
     if (doc.exists) {
       data = doc.data();
     } else {
-      // 첫 사용자: localStorage에서 마이그레이션 시도
       const saved = localStorage.getItem('budgetApp');
       if (saved) {
         try { data = JSON.parse(saved); } catch(e) {}
@@ -351,11 +333,10 @@ function loadFromFirestore() {
 }
 
 function saveToFirestore() {
-  if (!currentUser) return;
   clearTimeout(saveTimeout);
   saveTimeout = setTimeout(() => {
     setSyncStatus('저장 중...');
-    getDocRef().set(JSON.parse(JSON.stringify(data))).then(() => {
+    DOC_REF.set(JSON.parse(JSON.stringify(data))).then(() => {
       setSyncStatus('저장 완료');
     }).catch(err => {
       console.error('Firestore save error:', err);
@@ -842,7 +823,8 @@ function importJSON(event) {
   event.target.value = '';
 }
 
-// Firebase auth handles initialization via onAuthStateChanged → loadFromFirestore → initData
+// === Init ===
+loadFromFirestore();
 </script>
 </body>
 </html>
